@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 var request = Uri.https('api.hgbrasil.com', '/finance', { 'key': '3d362842' });
 
 void main() async {
-  print(await pegarDados());
   runApp(MaterialApp(
     home: Home(),
   ));
@@ -49,7 +48,7 @@ class _HomeState extends State<Home> {
         centerTitle:true ,
       ),
 
-      body: FutureBuilder(
+      body: FutureBuilder<Map>(
         future: pegarDados(),
         builder: (context, snapshot){
           switch (snapshot.connectionState) {
@@ -79,24 +78,24 @@ class _HomeState extends State<Home> {
                     )
                 );
               }else{
-                final data = snapshot.data! as Map<String, dynamic>;
-                ibovespaNome = data['results']['stocks']['IBOVESPA']['name'].toString();
-                ibovespaLocal = data['results']['stocks']['IBOVESPA']['location'].toString();
-                ibovespaPontos = data['results']['stocks']['IBOVESPA']['points'].toString();
-                ibovespaVariacao = data['results']['stocks']['IBOVESPA']['variation'].toString();
+                // final data = snapshot.data! as Map<String, dynamic>;
+                ibovespaNome = snapshot.data!['results']['stocks']['IBOVESPA']['name'].toString();
+                ibovespaLocal = snapshot.data!['results']['stocks']['IBOVESPA']['location'].toString();
+                ibovespaPontos = snapshot.data!['results']['stocks']['IBOVESPA']['points'].toString();
+                ibovespaVariacao = snapshot.data!['results']['stocks']['IBOVESPA']['variation'].toString();
 
-                nasdaqNome = data['results']['stocks']['NASDAQ']['name'].toString();
-                nasdaqLocal = data['results']['stocks']['NASDAQ']['location'].toString();
-                nasdaqPontos = data['results']['stocks']['NASDAQ']['points'].toString();
-                nasdaqVariacao = data['results']['stocks']['NASDAQ']['variation'].toString();
+                nasdaqNome = snapshot.data!['results']['stocks']['NASDAQ']['name'].toString();
+                nasdaqLocal = snapshot.data!['results']['stocks']['NASDAQ']['location'].toString();
+                nasdaqPontos = snapshot.data!['results']['stocks']['NASDAQ']['points'].toString();
+                nasdaqVariacao = snapshot.data!['results']['stocks']['NASDAQ']['variation'].toString();
 
-                nikkeiNome = data['results']['stocks']['NIKKEI']['name'].toString();
-                nikkeiLocal = data['results']['stocks']['NIKKEI']['location'].toString();
-                nikkeiVariacao = data['results']['stocks']['NIKKEI']['variation'].toString();
+                nikkeiNome = snapshot.data!['results']['stocks']['NIKKEI']['name'].toString();
+                nikkeiLocal = snapshot.data!['results']['stocks']['NIKKEI']['location'].toString();
+                nikkeiVariacao = snapshot.data!['results']['stocks']['NIKKEI']['variation'].toString();
 
-                cacNome = data['results']['stocks']['CAC']['name'].toString();
-                cacLocal = data['results']['stocks']['CAC']['location'].toString();
-                cacVariacao = data['results']['stocks']['CAC']['variation'].toString();
+                cacNome = snapshot.data!['results']['stocks']['CAC']['name'].toString();
+                cacLocal = snapshot.data!['results']['stocks']['CAC']['location'].toString();
+                cacVariacao = snapshot.data!['results']['stocks']['CAC']['variation'].toString();
               
                 return SingleChildScrollView(
                   padding: EdgeInsets.all(10),
@@ -233,10 +232,10 @@ class _HomeState extends State<Home> {
       
     );
   }
-}
-
 Future<Map> pegarDados() async{
   http.Response response = await http.get(request);
   return json.decode(response.body);
 }
+}
+
 
